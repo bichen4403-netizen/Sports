@@ -1,0 +1,17 @@
+# 1. 屏蔽虚拟环境 (那个超级大的文件夹)
+venv/
+.venv/
+env/
+
+# 2. 屏蔽Python编译的垃圾
+__pycache__/
+*.pyc
+
+# 3. 屏蔽本地数据库 (防止覆盖队友的数据)
+db.sqlite3
+
+# 4. 屏蔽系统文件 (Mac电脑的垃圾)
+.DS_Store
+
+# 屏蔽密码文件
+local_settings.py
