@@ -1,0 +1,145 @@
+<!-- 擂台模式：两人各占一竖长卡片居中，共同成就值一个，无 VS -->
+<view class="arena-container">
+  <!-- 页面中心：两个竖长卡片，点击各自头像查看各自成就 -->
+  <view class="arena-cards-wrap">
+    <view class="arena-card arena-card-partner" bindtap="gotoPartnerAchievement">
+      <view class="arena-card-avatar-wrap">
+        <block wx:if="{{partner.avatar === defaultAvatarUrl}}">
+          <view class="arena-card-avatar arena-avatar-placeholder"><text class="arena-avatar-icon">👤</text></view>
+        </block>
+        <image wx:else class="arena-card-avatar" src="{{partner.avatar}}" mode="aspectFill" />
+      </view>
+      <text class="arena-card-name">{{partner.nickName || '伙伴'}}</text>
+    </view>
+    <view class="arena-card arena-card-me" bindtap="gotoMyAchievement">
+      <view class="arena-card-avatar-wrap">
+        <block wx:if="{{me.avatar === defaultAvatarUrl}}">
+          <view class="arena-card-avatar arena-avatar-placeholder"><text class="arena-avatar-icon">👤</text></view>
+        </block>
+        <image wx:else class="arena-card-avatar" src="{{me.avatar}}" mode="aspectFill" />
+      </view>
+      <text class="arena-card-name">{{me.nickName || '我'}}</text>
+    </view>
+  </view>
+  <!-- 共同成就值（仅一个，无 VS）；左滑进入成就空间（此处始终可滑） -->
+  <view
+    class="arena-common-score-wrap"
+    bindtouchstart="onPendingSwipeStart"
+    bindtouchend="onPendingSwipeEnd"
+  >
+    <text class="arena-common-label">我与伙伴的共同成就值</text>
+    <text class="arena-common-value">{{commonAchieveScore}}</text>
+    <text class="arena-swipe-hint">左滑进入共同成就空间 ›</text>
+  </view>
+
+  <!-- 对方发起的任务（待我接受/拒绝）；左滑进入成就空间 -->
+  <view
+    class="arena-pending-wrap"
+    wx:if="{{pendingInvites.length > 0}}"
+    bindtouchstart="onPendingSwipeStart"
+    bindtouchend="onPendingSwipeEnd"
+  >
+    <view class="arena-pending-title-row">
+      <text class="arena-pending-title">对方发起的任务</text>
+      <text class="arena-pending-swipe-hint">左滑进入共同成就空间 ›</text>
+    </view>
+    <view class="arena-pending-item" wx:for="{{pendingInvites}}" wx:key="inviteId">
+      <view class="arena-pending-desc">{{item.timeDisplay}} {{item.place}} {{item.sportType}}</view>
+      <view class="arena-pending-actions">
+        <button class="arena-pending-btn arena-pending-accept" data-invite-id="{{item.inviteId}}" bindtap="openAcceptReminderSheet">接受</button>
+        <button class="arena-pending-btn arena-pending-reject" data-invite-id="{{item.inviteId}}" bindtap="openRejectSheet">拒绝</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 本界面只显示一个任务标识，点击进历史任务 -->
+  <view class="arena-task-indicator" wx:if="{{currentTask}}" bindtap="goTaskHistory">
+    <text class="arena-task-label">当前任务</text>
+    <text class="arena-task-desc">{{currentTask.time}} {{currentTask.place}} {{currentTask.sportType}}</text>
+    <text class="arena-task-arrow">查看历史 ›</text>
+  </view>
+  <view class="arena-task-indicator arena-task-empty" wx:else bindtap="goTaskHistory">
+    <text class="arena-task-empty-text">暂无进行中任务，点击查看历史</text>
+  </view>
+
+  <!-- 底部：发起任务 -->
+  <view class="arena-footer">
+    <button class="arena-task-btn" bindtap="showTaskPanel">发起任务</button>
+  </view>
+</view>
+
+<!-- 任务发起弹层（时间、地点、运动类型） -->
+<view class="task-mask" wx:if="{{taskPanelVisible}}" bindtap="hideTaskPanel"></view>
+<view class="task-panel" wx:if="{{taskPanelVisible}}">
+  <view class="task-panel-title">发起约运动</view>
+  <view class="task-panel-row">
+    <text class="task-panel-label">日期</text>
+    <picker mode="date" start="{{taskDateStart}}" end="{{taskDateEnd}}" value="{{taskDate}}" bindchange="onTaskDateChange">
+      <view class="task-panel-value">{{taskDateDisplay || '选择日期（最近2周）'}}</view>
+    </picker>
+  </view>
+  <view class="task-panel-row">
+    <text class="task-panel-label">时间</text>
+    <picker mode="time" value="{{taskTime}}" bindchange="onTaskTimeChange">
+      <view class="task-panel-value">{{taskTime || '选择时间（00:00-23:59）'}}</view>
+    </picker>
+  </view>
+  <view class="task-panel-row task-panel-row-place" bindtap="chooseTaskPlace">
+    <text class="task-panel-label">地点</text>
+    <view class="task-panel-value task-panel-place">
+      <text class="task-panel-place-text" wx:if="{{taskPlace}}">{{taskPlace}}</text>
+      <text class="task-panel-place-placeholder" wx:else>点击选择地点（地图选点）</text>
+      <text class="task-panel-place-icon">📍</text>
+    </view>
+  </view>
+  <view class="task-panel-row task-panel-row-place-manual" wx:if="{{taskPlace}}">
+    <text class="task-panel-label"></text>
+    <text class="task-panel-place-address">{{taskPlaceAddress || ''}}</text>
+  </view>
+  <view class="task-panel-row">
+    <text class="task-panel-label">运动类型</text>
+    <picker mode="selector" bindchange="onTaskSportChange" value="{{taskSportIndex}}" range="{{taskSportOptions}}">
+      <view class="task-panel-value">{{taskSportText || '选择类型'}}</view>
+    </picker>
+  </view>
+  <button class="task-panel-btn" bindtap="submitTask">发起</button>
+</view>
+
+<!-- 拒绝理由弹层：选择理由或输入说明 -->
+<view class="reject-mask" wx:if="{{rejectSheetVisible}}" bindtap="hideRejectSheet"></view>
+<view class="reject-sheet" wx:if="{{rejectSheetVisible}}">
+  <view class="reject-sheet-title">拒绝理由</view>
+  <view class="reject-sheet-reasons">
+    <view
+      class="reject-reason-item {{rejectReasonIndex === index ? 'reject-reason-active' : ''}}"
+      wx:for="{{rejectReasonOptions}}"
+      wx:key="*this"
+      data-index="{{index}}"
+      bindtap="onRejectReasonTap"
+    >{{item}}</view>
+  </view>
+  <view class="reject-sheet-input-wrap" wx:if="{{rejectReasonIndex === rejectReasonOtherIndex}}">
+    <textarea class="reject-sheet-input" placeholder="请输入拒绝说明（选填）" value="{{rejectReasonText}}" bindinput="onRejectReasonInput" maxlength="100" />
+  </view>
+  <view class="reject-sheet-input-wrap" wx:else>
+    <textarea class="reject-sheet-input" placeholder="可补充说明（选填）" value="{{rejectReasonText}}" bindinput="onRejectReasonInput" maxlength="100" />
+  </view>
+  <button class="reject-sheet-btn" bindtap="confirmReject">确认拒绝</button>
+</view>
+
+<!-- 接受后设置提醒：选择提前多久提醒，与微信订阅消息互通 -->
+<view class="reminder-mask" wx:if="{{acceptReminderVisible}}" bindtap="hideAcceptReminderSheet"></view>
+<view class="reminder-sheet" wx:if="{{acceptReminderVisible}}">
+  <view class="reminder-sheet-title">设置提醒</view>
+  <view class="reminder-sheet-desc">在设定时间通过微信服务通知提醒你</view>
+  <view class="reminder-sheet-options">
+    <view
+      class="reminder-option {{reminderIndex === index ? 'reminder-option-active' : ''}}"
+      wx:for="{{reminderOptions}}"
+      wx:key="minutes"
+      data-index="{{index}}"
+      bindtap="onReminderOptionTap"
+    >{{item.text}}</view>
+  </view>
+  <button class="reminder-sheet-btn" bindtap="confirmAcceptWithReminder">确定</button>
+</view>

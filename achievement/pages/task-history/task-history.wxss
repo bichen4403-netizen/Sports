@@ -1,0 +1,75 @@
+.task-history-container {
+  min-height: 100vh;
+  background: var(--theme-bg);
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.task-list {
+  height: 100vh;
+}
+
+.task-item {
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+}
+
+.task-item-row {
+  margin-bottom: 8rpx;
+}
+
+.task-item-time {
+  font-size: 28rpx;
+  color: var(--theme-text);
+  margin-right: 16rpx;
+}
+
+.task-item-place {
+  font-size: 28rpx;
+  color: var(--theme-text-secondary);
+}
+
+.task-item-type {
+  font-size: 24rpx;
+  color: var(--theme-primary-dark);
+}
+
+.task-item-status-tag {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-sm);
+  background: var(--theme-primary-light);
+  color: var(--theme-primary-dark);
+}
+
+.task-item-extra {
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  margin-top: 6rpx;
+}
+
+.task-item-reject {
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  margin-top: 8rpx;
+}
+
+.task-item-rejected .task-item-status-tag {
+  background: rgba(198, 69, 69, 0.15);
+  color: var(--theme-error);
+}
+
+.task-item-completed .task-item-status-tag {
+  background: rgba(45, 138, 94, 0.15);
+  color: var(--theme-success);
+}
+
+.task-empty {
+  text-align: center;
+  padding: 80rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-muted);
+}

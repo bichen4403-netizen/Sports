@@ -1,0 +1,55 @@
+<!-- 成就页面根容器：做样式隔离，避免和其他页面冲突 -->
+<view class="achievement-container">
+  <!-- 页面头部：展示已解锁成就数量 -->
+  <view class="achievement-header">
+    <text class="header-title">{{pageTitle}}</text>
+    <text class="header-subtitle">已解锁 {{unlockedCount}}/{{totalAchievements}} 个</text>
+  </view>
+
+  <!-- 成就列表区域：用scroll-view适配多成就时滚动 -->
+  <scroll-view class="achievement-list" scroll-y="true">
+    <!-- 遍历成就列表：wx:for是小程序列表渲染核心 -->
+    <block wx:for="{{achievementList}}" wx:key="id">
+      <!-- 成就卡片：根据解锁状态加不同class，实现样式区分 -->
+      <view class="achievement-card {{item.unlocked ? 'card-unlocked' : 'card-locked'}}">
+        <!-- 成就图标区域 -->
+        <view class="achievement-icon">
+          <text>{{item.icon}}</text>
+        </view>
+
+        <!-- 成就信息区域 -->
+        <view class="achievement-info">
+          <text class="info-title">{{item.title}}</text>
+          <text class="info-desc">{{item.desc}}</text>
+          
+          <!-- 进度条：仅未解锁时显示 -->
+          <view class="progress-wrap" wx:if="{{!item.unlocked}}">
+            <progress 
+              percent="{{(item.current / item.target) * 100}}" 
+              stroke-width="4" 
+              activeColor="#E8A317"
+              backgroundColor="#E8DCC8"
+            />
+            <text class="progress-text">当前：{{item.current}}/{{item.target}}</text>
+          </view>
+        </view>
+
+        <!-- 解锁状态标签 -->
+        <view class="achievement-status">
+          <text wx:if="{{item.unlocked}}">已解锁</text>
+          <text wx:else>未解锁</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 无成就时的占位提示 -->
+    <view class="empty-tip" wx:if="{{achievementList.length === 0}}">
+      <text>暂无成就，快去运动解锁吧～</text>
+    </view>
+  </scroll-view>
+
+  <!-- 快捷按钮：返回聊天页（适配和聊天模块的联动） -->
+  <view class="btn-wrap">
+    <button class="back-chat-btn" bindtap="gotoChat">返回聊天</button>
+  </view>
+</view>

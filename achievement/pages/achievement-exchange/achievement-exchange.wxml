@@ -1,0 +1,12 @@
+<!-- 成就兑换空间：共同成就值兑换奖励，后期完善 -->
+<view class="exchange-container">
+  <view class="exchange-header">
+    <text class="exchange-score-label">共同成就值</text>
+    <text class="exchange-score-value">{{commonScore}}</text>
+  </view>
+  <view class="exchange-placeholder">
+    <text class="placeholder-text">成就兑换功能开发中</text>
+    <text class="placeholder-hint">敬请期待～</text>
+  </view>
+  <button class="exchange-back-btn" bindtap="goBack">返回</button>
+</view>

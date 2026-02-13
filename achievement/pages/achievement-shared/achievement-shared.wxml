@@ -1,0 +1,191 @@
+<!-- 共同成就空间：成长地图，蜿蜒向上的登山路径 -->
+<view class="shared-container">
+  <!-- 顶部：伙伴名 + 共同成就值；右侧两人头像（从上一页获取，后期改为用户自定义） -->
+  <view class="shared-header">
+    <view class="shared-header-left">
+      <text class="shared-title">与 {{partnerName}} 的共同成就空间</text>
+      <view class="shared-score-row">
+        <view class="shared-score">
+          <text class="shared-score-label">共同成就值</text>
+          <text class="shared-score-value">{{commonScore}}</text>
+        </view>
+        <button class="shared-exchange-btn" bindtap="goToAchievementExchange">成就兑换</button>
+      </view>
+    </view>
+    <view class="shared-header-avatars">
+      <block wx:if="{{!partnerAvatar || partnerAvatar === defaultAvatarUrl}}">
+        <view class="shared-avatar shared-avatar-placeholder"><text class="shared-avatar-icon">👤</text></view>
+      </block>
+      <image wx:else class="shared-avatar" src="{{partnerAvatar}}" mode="aspectFill" />
+      <block wx:if="{{!meAvatar || meAvatar === defaultAvatarUrl}}">
+        <view class="shared-avatar shared-avatar-placeholder shared-avatar-me"><text class="shared-avatar-icon">👤</text></view>
+      </block>
+      <image wx:else class="shared-avatar shared-avatar-me" src="{{meAvatar}}" mode="aspectFill" />
+    </view>
+  </view>
+
+  <!-- 主体：左侧数据面板 + 右侧成长地图 -->
+  <view class="shared-body">
+    <!-- 左侧数据面板：共同运动次数、时长、成就勋章墙 -->
+    <view class="data-panel">
+      <view class="data-panel-item data-panel-item-tappable" bindtap="onActivityCountTap">
+        <text class="data-panel-value">{{jointExerciseCount}}</text>
+        <text class="data-panel-label">共同运动次数</text>
+      </view>
+      <view class="data-panel-item">
+        <text class="data-panel-value">{{jointExerciseDuration}}</text>
+        <text class="data-panel-label">共同运动时长</text>
+      </view>
+      <!-- 共同解锁成就勋章墙：当前用 emoji(icon) 展示；后期可替换为自绘/上传的勋章图片
+           替换方式：在 badge-item 内加 <image wx:if="{{item.medalImage}}" src="{{item.medalImage}}" class="badge-img" />
+           并改为 <text wx:else class="badge-icon">{{item.icon}}</text>，优先展示 medalImage -->
+      <view class="data-panel-badges">
+        <text class="data-panel-badges-title">共同解锁成就</text>
+        <scroll-view class="badge-wall-wrap" scroll-y enhanced>
+          <view class="badge-wall">
+            <view
+              class="badge-item"
+              wx:for="{{unlockedBadges}}"
+              wx:key="id"
+            >
+              <text class="badge-icon">{{item.icon}}</text>
+              <text class="badge-title">{{item.title}}</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <!-- 右侧成长地图：支持上下滑动查看历史节点 -->
+    <scroll-view
+      class="growth-scroll"
+      scroll-y="{{true}}"
+      enhanced
+      show-scrollbar="{{false}}"
+      enable-back-to-top="{{true}}"
+      bounces="{{true}}"
+      bindscroll="onScroll"
+    >
+    <view class="growth-map">
+      <!-- 山体背景层（远山、近山） -->
+      <view class="mountain-wrap">
+        <view class="mountain-layer mountain-far"></view>
+        <view class="mountain-layer mountain-mid"></view>
+        <view class="mountain-layer mountain-near"></view>
+      </view>
+      <!-- 节点间连线：每段连接相邻两节点 -->
+      <view
+        class="path-segment"
+        wx:for="{{pathSegments}}"
+        wx:key="index"
+        style="top: {{item.top}}rpx; left: {{item.left}}rpx; height: {{item.height}}rpx; transform: rotate({{item.rotate}}deg);"
+      ></view>
+      <!-- 山顶：最上方，也是成就点，可点击查看留言；未解锁时与其它未解锁节点样式一致 -->
+      <view
+        class="map-summit {{summitUnlocked ? 'unlocked' : 'locked'}} {{summitUnlocked ? 'node-tappable' : ''}}"
+        data-node-id="0"
+        data-node-title="顶峰"
+        data-unlocked="{{summitUnlocked}}"
+        catchtap="onNodeTap"
+      >
+        <text class="summit-icon">⛰</text>
+        <text class="summit-text">顶峰</text>
+      </view>
+      <!-- 路径节点：自上而下 巅峰→默契→步数→打卡→初次（山脚）；可点击查看/写留言 -->
+      <view
+        class="map-node {{index % 2 === 0 ? 'map-node-left' : 'map-node-right'}} {{item.unlocked ? 'unlocked' : 'locked'}} {{item.unlocked ? 'node-tappable' : ''}}"
+        wx:for="{{growthNodes}}"
+        wx:key="id"
+        style="top: {{item.top}}rpx;"
+        data-node-id="{{item.id}}"
+        data-node-title="{{item.title}}"
+        data-unlocked="{{item.unlocked}}"
+        catchtap="onNodeTap"
+      >
+        <view class="node-dot">
+          <text class="node-icon">{{item.icon}}</text>
+        </view>
+        <view class="node-content">
+          <text class="node-title">{{item.title}}</text>
+          <text class="node-desc">{{item.desc}}</text>
+        </view>
+      </view>
+      <!-- 两匹马：站在当前/历史节点，不站在未来节点；后期可替换为用户上传图片 -->
+      <view
+        wx:if="{{hasUnlockedNodes}}"
+        class="horse-wrap {{horseIsLeft ? 'horse-left' : 'horse-right'}}"
+        style="top: {{horseTop}}rpx;"
+      >
+        <image wx:if="{{horseImage1}}" class="horse-img" src="{{horseImage1}}" mode="aspectFit" />
+        <text wx:else class="horse-placeholder">🐴</text>
+        <image wx:if="{{horseImage2}}" class="horse-img horse-second" src="{{horseImage2}}" mode="aspectFit" />
+        <text wx:else class="horse-placeholder horse-second">🐴</text>
+      </view>
+    </view>
+    </scroll-view>
+  </view>
+
+  <view class="shared-footer">
+    <button class="shared-back-btn" bindtap="goBack">返回</button>
+  </view>
+
+  <!-- 节点留言弹窗：查看历史留言 + 写新留言 -->
+  <view class="message-modal-mask" wx:if="{{showMessageModal}}" catchtap="closeMessageModal">
+    <view class="message-modal" catchtap="preventTapPropagation">
+      <view class="message-modal-header">
+        <text class="message-modal-title">{{selectedNode.title}}</text>
+        <view class="message-modal-close" bindtap="closeMessageModal">×</view>
+      </view>
+      <scroll-view class="message-list-wrap" scroll-y scroll-into-view="{{scrollToMsgId}}" scroll-with-animation enhanced>
+        <view class="message-list" wx:if="{{nodeMessages.length > 0}}">
+          <view
+            class="message-item {{item.isMe ? 'message-me' : 'message-partner'}}"
+            wx:for="{{nodeMessages}}"
+            wx:key="id"
+            id="msg-{{item.id}}"
+          >
+            <text class="message-author">{{item.isMe ? '我' : partnerName}}</text>
+            <text class="message-content">{{item.content}}</text>
+            <text class="message-time">{{item.time}}</text>
+          </view>
+        </view>
+        <view class="message-empty" wx:else>暂无留言，写下第一条吧～</view>
+      </scroll-view>
+      <view class="message-input-bar" wx:if="{{selectedNode.unlocked}}">
+        <input
+          class="message-input"
+          placeholder="写一条留言..."
+          value="{{newMessageText}}"
+          bindinput="onMessageInput"
+          bindconfirm="submitMessage"
+          confirm-type="send"
+        />
+        <button class="message-send-btn" bindtap="submitMessage">发送</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 共同运动历史弹窗：查看各节点约了什么活动、持续多久 -->
+  <view class="message-modal-mask" wx:if="{{showActivityHistoryModal}}" catchtap="closeActivityHistoryModal">
+    <view class="message-modal activity-history-modal" catchtap="preventTapPropagation">
+      <view class="message-modal-header">
+        <text class="message-modal-title">共同运动历史</text>
+        <view class="message-modal-close" bindtap="closeActivityHistoryModal">×</view>
+      </view>
+      <scroll-view class="message-list-wrap" scroll-y enhanced>
+        <view class="activity-history-list" wx:if="{{activityHistoryRecords.length > 0}}">
+          <view class="activity-history-item" wx:for="{{activityHistoryRecords}}" wx:key="id">
+            <view class="activity-history-main">
+              <text class="activity-history-date">{{item.date}}</text>
+              <text class="activity-history-activity">{{item.activity}}</text>
+            </view>
+            <view class="activity-history-extra">
+              <text class="activity-history-duration">{{item.duration}}</text>
+              <text class="activity-history-node" wx:if="{{item.nodeTitle}}">{{item.nodeTitle}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="message-empty" wx:else>暂无共同运动记录</view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

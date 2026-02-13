@@ -1,0 +1,159 @@
+<view class="index-container">
+  <!-- 顶部：成就商店入口 -->
+  <view class="mall-entry" bindtap="goMall">
+    <view class="mall-entry-inner">
+      <view class="mall-icon-wrap">
+        <text class="mall-icon">🏪</text>
+      </view>
+      <view class="mall-text">
+        <text class="mall-title">成就商店</text>
+        <text class="mall-desc">兑换装备与奖励</text>
+      </view>
+      <text class="mall-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 分隔标题 -->
+  <view class="section-header">
+    <text class="section-title">匹配伙伴</text>
+  </view>
+
+  <!-- 日历：月视图，成功约定黄点，与搭子类型筛选联动 -->
+  <view class="calendar-wrap">
+    <view class="calendar-header">
+      <view class="calendar-nav" bindtap="prevMonth">
+        <text class="calendar-arrow">‹</text>
+      </view>
+      <text class="calendar-title">{{calendarTitle}}</text>
+      <view class="calendar-nav" bindtap="nextMonth">
+        <text class="calendar-arrow">›</text>
+      </view>
+    </view>
+    <view class="calendar-week-row">
+      <text class="calendar-week-cell" wx:for="{{weekHeaders}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="calendar-grid">
+      <view
+        class="calendar-cell {{item.isCurrentMonth ? 'current-month' : 'other-month'}} {{item.isToday ? 'today' : ''}} {{item.hasDot ? 'has-dot-tappable' : ''}}"
+        wx:for="{{calendarDays}}"
+        wx:key="index"
+        data-date-key="{{item.dateKey}}"
+        data-has-dot="{{item.hasDot}}"
+        bindtap="onCalendarDayTap"
+      >
+        <view class="calendar-day-wrap" wx:if="{{item.day > 0}}">
+          <text class="calendar-day-num">{{item.day}}</text>
+        </view>
+        <view class="calendar-dot" wx:if="{{item.hasDot}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 排序与筛选：搭子类型 + 活跃程度（符合小程序规范，列表上方固定筛选栏） -->
+  <view class="filter-bar">
+    <view class="filter-item">
+      <text class="filter-label">搭子类型</text>
+      <picker mode="selector" range="{{sportTypeOptions}}" value="{{sportTypeIndex}}" bindchange="onSportTypeChange">
+        <view class="filter-value">
+          <text>{{sportTypeOptions[sportTypeIndex]}}</text>
+          <text class="filter-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="filter-item">
+      <text class="filter-label">活跃程度</text>
+      <picker mode="selector" range="{{activitySortOptions}}" value="{{activitySortIndex}}" bindchange="onActivitySortChange">
+        <view class="filter-value">
+          <text>{{activitySortOptions[activitySortIndex]}}</text>
+          <text class="filter-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 聊天列表：展示经筛选、排序后的列表 -->
+  <scroll-view class="chat-list" scroll-y="{{true}}" enhanced="{{true}}">
+    <view
+      class="chat-item"
+      wx:for="{{displayList}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="openChat"
+    >
+      <block wx:if="{{item.avatar === defaultAvatarUrl}}">
+        <view class="item-avatar item-avatar-placeholder">
+          <text class="item-avatar-icon">👤</text>
+        </view>
+      </block>
+      <image wx:else class="item-avatar" src="{{item.avatar}}" mode="aspectFill" />
+      <view class="item-body">
+        <view class="item-name-row">
+          <text class="item-name">{{item.nickName}}</text>
+          <text class="item-sport-tag" wx:if="{{item.sportType}}">{{item.sportType}}</text>
+        </view>
+        <text class="item-last-msg">{{item.lastMessage}}</text>
+      </view>
+      <view class="item-right">
+        <text class="item-time">{{item.lastTime}}</text>
+        <!-- 火花：与活跃程度映射，活跃一天一项活动+1（展示 activityScore，无则用 sparkCount） -->
+        <view class="item-spark">
+          <text class="spark-icon">🔥</text>
+          <text class="spark-num">{{item.activityScore != null ? item.activityScore : (item.sparkCount || 0)}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="empty-tip" wx:if="{{displayList.length === 0}}">
+      <text>{{filterEmptyTip}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 日历黄点详情弹窗：当日约定、运动类型、伙伴、时间 -->
+  <view class="task-detail-mask" wx:if="{{showTaskDetailModal}}" catchtap="closeTaskDetailModal">
+    <view class="task-detail-modal" catchtap="preventTapPropagation">
+      <view class="task-detail-header">
+        <text class="task-detail-title">{{taskDetailDate}}</text>
+        <view class="task-detail-close" bindtap="closeTaskDetailModal">×</view>
+      </view>
+      <view class="task-detail-list">
+        <view class="task-detail-item" wx:for="{{taskDetailList}}" wx:key="taskId">
+          <view class="task-detail-main">
+            <text class="task-detail-sport">{{item.sportType}}</text>
+            <text class="task-detail-partner">与 {{item.partnerName || '伙伴'}}</text>
+            <text class="task-detail-time">{{item.taskTime || '—'}}</text>
+            <text class="task-detail-status" wx:if="{{item.status === 'completed'}}">✓ 已完成</text>
+          </view>
+          <button
+            wx:if="{{item._status === 'accepted'}}"
+            class="task-detail-complete-btn"
+            data-task-id="{{item.taskId}}"
+            data-chat-id="{{item.chatId}}"
+            bindtap="openCompleteForm"
+          >完成</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 打勾完成表单：填写时长、评价 -->
+  <view class="task-detail-mask" wx:if="{{showCompleteForm}}" catchtap="closeCompleteForm">
+    <view class="task-detail-modal" catchtap="preventTapPropagation">
+      <view class="task-detail-header">
+        <text class="task-detail-title">标记完成</text>
+        <view class="task-detail-close" bindtap="closeCompleteForm">×</view>
+      </view>
+      <view class="complete-form">
+        <view class="complete-form-row">
+          <text class="complete-form-label">运动时长</text>
+          <input class="complete-form-input" placeholder="如 30分钟" value="{{completeDuration}}" bindinput="onCompleteDurationInput" />
+        </view>
+        <view class="complete-form-row">
+          <text class="complete-form-label">评价</text>
+          <picker mode="selector" range="{{completeRatingOptions}}" value="{{completeRatingIndex}}" bindchange="onCompleteRatingChange">
+            <view class="complete-form-picker">{{completeRatingOptions[completeRatingIndex]}}</view>
+          </picker>
+        </view>
+        <button class="complete-form-btn" bindtap="submitComplete">确认完成</button>
+      </view>
+    </view>
+  </view>
+</view>

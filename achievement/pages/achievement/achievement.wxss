@@ -1,0 +1,144 @@
+/* 成就页：使用主题变量，样式隔离在根容器下 */
+.achievement-container {
+  min-height: 100vh;
+  background: var(--theme-bg);
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.achievement-container .achievement-header {
+  padding: 32rpx 28rpx;
+  background: linear-gradient(135deg, var(--theme-primary-light) 0%, var(--theme-bg-card) 100%);
+  border-radius: var(--radius-lg);
+  margin-bottom: 24rpx;
+  box-shadow: var(--shadow-card);
+}
+
+.achievement-container .header-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 8rpx;
+}
+
+.achievement-container .header-subtitle {
+  font-size: 26rpx;
+  color: var(--theme-text-secondary);
+}
+
+.achievement-container .achievement-list {
+  flex: 1;
+  height: calc(100vh - 280rpx);
+}
+
+.achievement-container .achievement-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  margin-bottom: 20rpx;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.achievement-container .achievement-card.card-unlocked {
+  background: var(--theme-primary-light);
+  border-left: 6rpx solid var(--theme-primary);
+}
+
+.achievement-container .achievement-card.card-locked {
+  background: var(--theme-bg-card);
+  border: 1rpx solid var(--theme-border);
+}
+
+.achievement-container .achievement-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 24rpx;
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.achievement-container .achievement-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.achievement-container .info-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 6rpx;
+}
+
+.achievement-container .info-desc {
+  display: block;
+  font-size: 24rpx;
+  color: var(--theme-text-secondary);
+  margin-bottom: 12rpx;
+}
+
+.achievement-container .progress-wrap {
+  margin-top: 8rpx;
+}
+
+.achievement-container .progress-wrap progress {
+  margin-bottom: 6rpx;
+}
+
+.achievement-container .progress-text {
+  font-size: 22rpx;
+  color: var(--theme-text-muted);
+}
+
+.achievement-container .achievement-status {
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: var(--radius-pill);
+  margin-left: 16rpx;
+}
+
+.achievement-container .card-unlocked .achievement-status {
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+}
+
+.achievement-container .card-locked .achievement-status {
+  background: var(--theme-bg-input);
+  color: var(--theme-text-muted);
+}
+
+.achievement-container .empty-tip {
+  text-align: center;
+  padding: 60rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-muted);
+}
+
+.achievement-container .btn-wrap {
+  margin-top: 32rpx;
+  padding: 0 8rpx;
+}
+
+.achievement-container .back-chat-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(180deg, #F0B429 0%, var(--theme-primary-dark) 100%);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-pill);
+  font-size: 32rpx;
+  font-weight: 500;
+  box-shadow: var(--shadow-btn);
+  border: none;
+}
+
+.achievement-container .back-chat-btn::after {
+  border: none;
+}

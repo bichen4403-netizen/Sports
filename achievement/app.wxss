@@ -1,0 +1,37 @@
+/* ========== 主题变量：色系与通用样式（统一管理，各页面用 var(--xxx) 引用） ========== */
+page {
+  /* ----- 主色（暖黄） ----- */
+  --theme-primary: #E8A317;
+  --theme-primary-light: #FFF8E7;
+  --theme-primary-dark: #D4940E;
+
+  /* ----- 背景 ----- */
+  --theme-bg: #FDF6E8;
+  --theme-bg-card: #FFFEF9;
+  --theme-bg-input: #FFFBF5;
+
+  /* ----- 边框与分割 ----- */
+  --theme-border: #E8DCC8;
+  --theme-divider: #E8DCC8;
+
+  /* ----- 文字 ----- */
+  --theme-text: #3d3d3d;
+  --theme-text-secondary: #7a6f5c;
+  --theme-text-muted: #a89f8f;
+  --theme-text-on-primary: #fff;
+
+  /* ----- 状态（可选） ----- */
+  --theme-success: #2d8a5e;
+  --theme-warning: #c6860c;
+  --theme-error: #c64545;
+
+  /* ----- 圆角 ----- */
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 24rpx;
+  --radius-pill: 999rpx;
+
+  /* ----- 阴影 ----- */
+  --shadow-card: 0 8rpx 24rpx rgba(0, 0, 0, 0.06);
+  --shadow-btn: 0 8rpx 20rpx rgba(232, 163, 23, 0.25);
+}

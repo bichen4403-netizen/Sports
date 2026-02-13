@@ -1,0 +1,24 @@
+<view class="task-history-container">
+  <scroll-view class="task-list" scroll-y="{{true}}" enhanced="{{true}}">
+    <view
+      class="task-item task-item-{{item.status === 'rejected' ? 'rejected' : (item.status === 'completed' ? 'completed' : 'accepted')}}"
+      wx:for="{{taskList}}"
+      wx:key="_id"
+    >
+      <view class="task-item-row">
+        <text class="task-item-time">{{item.taskDate || ''}} {{item.taskTime || ''}}</text>
+        <text class="task-item-status-tag">{{item.statusLabel || '进行中'}}</text>
+      </view>
+      <view class="task-item-row">
+        <text class="task-item-place">{{item.place || '—'}}</text>
+      </view>
+      <text class="task-item-type">{{item.sportType}}</text>
+      <text class="task-item-extra" wx:if="{{item.partnerName}}">与 {{item.partnerName}}</text>
+      <text class="task-item-extra" wx:elif="{{item.duration}}">时长 {{item.duration}}</text>
+      <text class="task-item-reject" wx:if="{{item.status === 'rejected' && item.reasonType}}">拒绝理由：{{item.reasonType}}</text>
+    </view>
+    <view class="task-empty" wx:if="{{taskList.length === 0}}">
+      <text>暂无历史任务</text>
+    </view>
+  </scroll-view>
+</view>

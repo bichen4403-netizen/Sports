@@ -1,0 +1,505 @@
+/* 擂台模式：两竖长卡片居中，共同成就值一个 */
+.arena-container {
+  min-height: 100vh;
+  background: var(--theme-bg);
+  padding: 24rpx;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 页面中心：两个竖长卡片 */
+.arena-cards-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 24rpx;
+  width: 100%;
+  margin-bottom: 28rpx;
+}
+
+.arena-card {
+  flex: 1;
+  max-width: 280rpx;
+  min-height: 320rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx 24rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1rpx solid var(--theme-border);
+}
+
+.arena-card-avatar-wrap {
+  margin-bottom: 20rpx;
+}
+
+.arena-card-avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+}
+
+.arena-avatar-placeholder {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-primary-light);
+  border: 2rpx solid var(--theme-primary);
+}
+
+.arena-avatar-icon {
+  font-size: 56rpx;
+}
+
+.arena-card-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--theme-text);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 共同成就值（仅一个，无 VS） */
+.arena-common-score-wrap {
+  width: 100%;
+  padding: 24rpx 28rpx;
+  background: var(--theme-primary-light);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+  text-align: center;
+  margin-bottom: 24rpx;
+}
+
+.arena-common-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--theme-text-secondary);
+  margin-bottom: 8rpx;
+}
+
+.arena-common-value {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--theme-primary-dark);
+}
+
+.arena-swipe-hint {
+  display: block;
+  font-size: 22rpx;
+  color: var(--theme-text-muted);
+  margin-top: 8rpx;
+}
+
+/* 对方发起的任务（待我接受/拒绝）；左滑进入成就空间 */
+.arena-pending-wrap {
+  width: 100%;
+  margin-bottom: 24rpx;
+}
+
+.arena-pending-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+  padding: 0 4rpx;
+}
+
+.arena-pending-title {
+  font-size: 26rpx;
+  color: var(--theme-text-muted);
+}
+
+.arena-pending-swipe-hint {
+  font-size: 22rpx;
+  color: var(--theme-text-muted);
+}
+
+.arena-pending-item {
+  padding: 20rpx 24rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+  margin-bottom: 16rpx;
+}
+
+.arena-pending-desc {
+  font-size: 28rpx;
+  color: var(--theme-text);
+  margin-bottom: 16rpx;
+}
+
+.arena-pending-actions {
+  display: flex;
+  gap: 20rpx;
+  justify-content: flex-end;
+}
+
+.arena-pending-btn {
+  padding: 12rpx 32rpx;
+  font-size: 26rpx;
+  border-radius: var(--radius-pill);
+  border: none;
+}
+
+.arena-pending-btn::after {
+  border: none;
+}
+
+.arena-pending-accept {
+  background: linear-gradient(180deg, #F0B429 0%, var(--theme-primary-dark) 100%);
+  color: var(--theme-text-on-primary);
+}
+
+.arena-pending-reject {
+  background: var(--theme-bg-input);
+  color: var(--theme-text-secondary);
+  border: 1rpx solid var(--theme-border);
+}
+
+/* 拒绝理由弹层 */
+.reject-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.reject-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 32rpx 28rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.reject-sheet-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.reject-sheet-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.reject-reason-item {
+  padding: 16rpx 24rpx;
+  font-size: 26rpx;
+  color: var(--theme-text-secondary);
+  background: var(--theme-bg-input);
+  border-radius: var(--radius-sm);
+  border: 1rpx solid var(--theme-border);
+}
+
+.reject-reason-item.reject-reason-active {
+  background: var(--theme-primary-light);
+  color: var(--theme-primary-dark);
+  border-color: var(--theme-primary);
+}
+
+.reject-sheet-input-wrap {
+  margin-bottom: 24rpx;
+}
+
+.reject-sheet-input {
+  width: 100%;
+  min-height: 120rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  background: var(--theme-bg-input);
+  border-radius: var(--radius-sm);
+  border: 1rpx solid var(--theme-border);
+  box-sizing: border-box;
+}
+
+.reject-sheet-btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  background: var(--theme-bg-input);
+  color: var(--theme-text-secondary);
+  border-radius: var(--radius-md);
+  font-size: 30rpx;
+  border: 1rpx solid var(--theme-border);
+}
+
+.reject-sheet-btn::after {
+  border: none;
+}
+
+/* 接受后设置提醒弹层 */
+.reminder-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.reminder-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 32rpx 28rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.reminder-sheet-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 8rpx;
+  text-align: center;
+}
+
+.reminder-sheet-desc {
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.reminder-sheet-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 28rpx;
+}
+
+.reminder-option {
+  padding: 20rpx 28rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-secondary);
+  background: var(--theme-bg-input);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+}
+
+.reminder-option.reminder-option-active {
+  background: var(--theme-primary-light);
+  color: var(--theme-primary-dark);
+  border-color: var(--theme-primary);
+}
+
+.reminder-sheet-btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(180deg, #F0B429 0%, var(--theme-primary-dark) 100%);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-md);
+  font-size: 30rpx;
+  border: none;
+  box-shadow: var(--shadow-btn);
+}
+
+.reminder-sheet-btn::after {
+  border: none;
+}
+
+/* 本界面只显示一个任务标识 */
+.arena-task-indicator {
+  width: 100%;
+  padding: 24rpx 28rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+  margin-bottom: 24rpx;
+}
+
+.arena-task-indicator.arena-task-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arena-task-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  margin-bottom: 8rpx;
+}
+
+.arena-task-desc {
+  font-size: 28rpx;
+  color: var(--theme-text);
+}
+
+.arena-task-arrow {
+  display: block;
+  font-size: 24rpx;
+  color: var(--theme-primary-dark);
+  margin-top: 8rpx;
+}
+
+.arena-task-empty-text {
+  font-size: 26rpx;
+  color: var(--theme-text-muted);
+}
+
+/* 底部发起任务 */
+.arena-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: var(--theme-bg-card);
+  border-top: 1rpx solid var(--theme-divider);
+}
+
+.arena-task-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(180deg, #F0B429 0%, var(--theme-primary-dark) 100%);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-pill);
+  font-size: 32rpx;
+  border: none;
+  box-shadow: var(--shadow-btn);
+}
+
+.arena-task-btn::after {
+  border: none;
+}
+
+/* 任务发起弹层 */
+.task-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.task-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 32rpx 28rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+.task-panel-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 28rpx;
+  text-align: center;
+}
+
+.task-panel-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.task-panel-label {
+  width: 140rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-secondary);
+  flex-shrink: 0;
+}
+
+.task-panel-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--theme-text);
+  padding: 16rpx 20rpx;
+  background: var(--theme-bg-input);
+  border-radius: var(--radius-sm);
+}
+
+.task-panel-input {
+  flex: 1;
+  height: 72rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  background: var(--theme-bg-input);
+  border-radius: var(--radius-sm);
+}
+
+.task-panel-row-place .task-panel-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-panel-place-text,
+.task-panel-place-placeholder {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8rpx;
+}
+
+.task-panel-place-placeholder {
+  color: var(--theme-text-muted);
+}
+
+.task-panel-place-icon {
+  font-size: 32rpx;
+}
+
+.task-panel-row-place-manual .task-panel-place-address {
+  flex: 1;
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-panel-btn {
+  margin-top: 24rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(180deg, #F0B429 0%, var(--theme-primary-dark) 100%);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-md);
+  font-size: 32rpx;
+  border: none;
+  box-shadow: var(--shadow-btn);
+}
+
+.task-panel-btn::after {
+  border: none;
+}

@@ -1,0 +1,61 @@
+/* 成就兑换空间 */
+.exchange-container {
+  min-height: 100vh;
+  background: var(--theme-bg);
+  padding: 48rpx 32rpx;
+}
+
+.exchange-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 32rpx;
+  background: var(--theme-primary-light);
+  border-radius: var(--radius-lg);
+  border: 3rpx solid var(--theme-primary);
+  margin-bottom: 48rpx;
+}
+
+.exchange-score-label {
+  font-size: 28rpx;
+  color: var(--theme-text-secondary);
+}
+
+.exchange-score-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--theme-primary-dark);
+}
+
+.exchange-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 48rpx;
+}
+
+.placeholder-text {
+  font-size: 32rpx;
+  color: var(--theme-text);
+  margin-bottom: 16rpx;
+}
+
+.placeholder-hint {
+  font-size: 26rpx;
+  color: var(--theme-text-muted);
+}
+
+.exchange-back-btn {
+  margin-top: 48rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-md);
+  border: none;
+}
+
+.exchange-back-btn::after {
+  border: none;
+}

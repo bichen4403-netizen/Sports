@@ -1,0 +1,496 @@
+.index-container {
+  min-height: 100vh;
+  background: var(--theme-bg);
+  padding: 24rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
+}
+
+/* 成就商店入口 */
+.mall-entry {
+  margin-bottom: 24rpx;
+}
+
+.mall-entry-inner {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  background: linear-gradient(135deg, var(--theme-primary-light) 0%, var(--theme-bg-card) 100%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1rpx solid var(--theme-border);
+}
+
+.mall-icon-wrap {
+  width: 88rpx;
+  height: 88rpx;
+  background: var(--theme-primary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.mall-icon {
+  font-size: 44rpx;
+}
+
+.mall-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mall-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+  margin-bottom: 6rpx;
+}
+
+.mall-desc {
+  font-size: 24rpx;
+  color: var(--theme-text-secondary);
+}
+
+.mall-arrow {
+  font-size: 44rpx;
+  color: var(--theme-text-muted);
+  margin-left: 16rpx;
+}
+
+/* 日历（月视图，官方风格：标题 + 周头 + 日格，黄点标注成功约定） */
+.calendar-wrap {
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1rpx solid var(--theme-border);
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: var(--shadow-card);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.calendar-nav {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--theme-bg-input);
+}
+
+.calendar-nav:active {
+  background: var(--theme-border);
+}
+
+.calendar-arrow {
+  font-size: 44rpx;
+  color: var(--theme-text);
+  font-weight: 300;
+}
+
+.calendar-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+}
+
+.calendar-week-row {
+  display: flex;
+  margin-bottom: 12rpx;
+}
+
+.calendar-week-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--theme-text-muted);
+}
+
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar-cell {
+  width: 14.28%;
+  aspect-ratio: 1;
+  max-height: 72rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.calendar-cell.other-month .calendar-day-num {
+  color: var(--theme-text-muted);
+  opacity: 0.5;
+}
+
+.calendar-day-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56rpx;
+  min-height: 56rpx;
+  border-radius: 50%;
+}
+
+.calendar-cell.today .calendar-day-wrap {
+  background: rgba(232, 163, 23, 0.25);
+}
+
+.calendar-day-num {
+  font-size: 26rpx;
+  color: var(--theme-text);
+  line-height: 1.2;
+}
+
+.calendar-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--theme-primary);
+  margin-top: 4rpx;
+}
+
+/* 分区标题 */
+.section-header {
+  padding: 16rpx 8rpx 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+}
+
+/* 排序与筛选栏（小程序规范：列表上方固定、picker 选择） */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 0;
+  margin-bottom: 8rpx;
+}
+
+.filter-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--theme-border);
+}
+
+.filter-label {
+  font-size: 26rpx;
+  color: var(--theme-text-secondary);
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.filter-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  color: var(--theme-text);
+  min-width: 0;
+}
+
+.filter-arrow {
+  font-size: 28rpx;
+  color: var(--theme-text-muted);
+  margin-left: 8rpx;
+}
+
+/* 聊天列表 */
+.chat-list {
+  height: calc(100vh - 720rpx);
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  background: var(--theme-bg-card);
+  border-bottom: 1rpx solid var(--theme-divider);
+}
+
+.chat-item:active {
+  background: var(--theme-bg-input);
+}
+
+.item-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+/* 测试阶段占位头像：与主色一致；接入真实头像后若仅用 image 可删除此样式 */
+.item-avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--theme-primary-light);
+  border: 2rpx solid var(--theme-primary);
+}
+.item-avatar-icon {
+  font-size: 44rpx;
+}
+
+.item-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.item-name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+  gap: 12rpx;
+  min-width: 0;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: var(--theme-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 60%;
+}
+
+.item-sport-tag {
+  font-size: 20rpx;
+  padding: 2rpx 10rpx;
+  background: var(--theme-primary-light);
+  color: var(--theme-primary-dark);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.item-last-msg {
+  font-size: 24rpx;
+  color: var(--theme-text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 20rpx;
+}
+
+.item-time {
+  font-size: 22rpx;
+  color: var(--theme-text-muted);
+  margin-bottom: 12rpx;
+}
+
+/* 火花区域（后期可整体替换为自定义组件或图片） */
+.item-spark {
+  display: flex;
+  align-items: center;
+  padding: 6rpx 14rpx;
+  background: var(--theme-primary-light);
+  border-radius: var(--radius-pill);
+  border: 1rpx solid var(--theme-border);
+}
+
+.spark-icon {
+  font-size: 28rpx;
+  margin-right: 4rpx;
+}
+
+.spark-num {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--theme-primary-dark);
+}
+
+.empty-tip {
+  text-align: center;
+  padding: 80rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-muted);
+}
+
+/* 日历黄点详情弹窗 */
+.task-detail-mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.task-detail-modal {
+  width: 100%;
+  background: var(--theme-bg);
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 28rpx 24rpx;
+  padding-bottom: calc(28rpx + env(safe-area-inset-bottom));
+}
+
+.task-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid var(--theme-border);
+}
+
+.task-detail-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--theme-text);
+}
+
+.task-detail-close {
+  font-size: 48rpx;
+  color: var(--theme-text-muted);
+  line-height: 1;
+  padding: 0 16rpx;
+}
+
+.task-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.task-detail-item {
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  background: var(--theme-bg-card);
+  border-radius: var(--radius-md);
+  border: 2rpx solid var(--theme-border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.task-detail-sport {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--theme-primary-dark);
+  margin-bottom: 8rpx;
+}
+
+.task-detail-partner {
+  font-size: 28rpx;
+  color: var(--theme-text);
+  margin-bottom: 6rpx;
+}
+
+.task-detail-time {
+  font-size: 26rpx;
+  color: var(--theme-text-muted);
+}
+
+.task-detail-main {
+  flex: 1;
+}
+
+.task-detail-status {
+  font-size: 24rpx;
+  color: var(--theme-success);
+  margin-top: 8rpx;
+}
+
+.task-detail-complete-btn {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  font-size: 26rpx;
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-pill);
+  border: none;
+}
+
+.task-detail-complete-btn::after {
+  border: none;
+}
+
+/* 打勾完成表单 */
+.complete-form {
+  padding: 24rpx 0;
+}
+
+.complete-form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.complete-form-label {
+  width: 160rpx;
+  font-size: 28rpx;
+  color: var(--theme-text-secondary);
+}
+
+.complete-form-input,
+.complete-form-picker {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  background: var(--theme-bg-input);
+  border: 2rpx solid var(--theme-border);
+  border-radius: var(--radius-md);
+  font-size: 28rpx;
+}
+
+.complete-form-btn {
+  margin-top: 32rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  background: var(--theme-primary);
+  color: var(--theme-text-on-primary);
+  border-radius: var(--radius-md);
+  border: none;
+}
+
+.complete-form-btn::after {
+  border: none;
+}
+
+.calendar-cell.has-dot-tappable {
+  cursor: pointer;
+}
