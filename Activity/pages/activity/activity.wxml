@@ -1,0 +1,98 @@
+<view class="container">
+  <view class="header-section">
+    <view class="search-box">
+      <icon type="search" size="16" color="#999"></icon>
+      <input placeholder="搜索活动 / 场馆 / 城市" placeholder-class="ph-style" bindinput="handleSearch" value="{{searchKeyword}}" />
+    </view>
+
+    <view class="filter-area">
+      <!-- 运动类型筛选 -->
+      <scroll-view scroll-x class="sport-scroll" enable-flex>
+        <view class="sport-row">
+          <block wx:for="{{displaySports}}" wx:key="*this">
+            <view class="sport-chip {{item === currentSport ? 'active' : ''}}" bindtap="selectSport" data-sport="{{item}}">
+              {{item}}
+            </view>
+          </block>
+          <view class="sport-chip more-chip" bindtap="toggleMore">
+            {{showMore ? '收起' : '更多'}} <icon type="{{showMore ? 'up' : 'down'}}" size="14" color="#666"></icon>
+          </view>
+        </view>
+      </scroll-view>
+      
+      <!-- 半屏弹窗显示全部运动类型 -->
+      <view class="modal-overlay" wx:if="{{showMore}}" bindtap="toggleMore"></view>
+      <view class="sports-modal" wx:if="{{showMore}}">
+        <view class="modal-header">
+          <text class="modal-title">选择运动类型</text>
+          <view class="close-btn" bindtap="toggleMore">
+            <icon type="clear" size="24" color="#666"></icon>
+          </view>
+        </view>
+        <view class="modal-content">
+          <view class="sport-grid">
+            <block wx:for="{{allSports}}" wx:key="*this">
+              <view class="sport-chip grid-chip {{item === currentSport ? 'active' : ''}}" bindtap="selectSport" data-sport="{{item}}">
+                {{item}}
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 排序选项 -->
+      <view class="sort-options">
+        <view class="sort-item {{sortType === 'smart' ? 'active' : ''}}" bindtap="changeSort" data-type="smart">智能排序</view>
+        <view class="sort-item {{sortType === 'distance' ? 'active' : ''}}" bindtap="changeSort" data-type="distance">距离优先</view>
+        <view class="sort-item {{sortType === 'time' ? 'active' : ''}}" bindtap="changeSort" data-type="time">时间优先</view>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="main-scroll">
+    <block wx:if="{{activities.length > 0}}">
+      <view class="activity-list">
+        <view class="activity-card" wx:for="{{activities}}" wx:key="id" bindtap="goToDetail" data-item="{{item}}">
+          <view class="card-img-box">
+            <image src="{{item.image}}" mode="aspectFill" class="card-img"></image>
+            <view class="status-badge {{item.status === 1 ? 'ongoing' : ''}} {{item.status === 2 ? 'finished' : ''}}">
+              {{item.status === 0 ? '报名中' : (item.status === 1 ? '进行中' : '已结束')}}
+            </view>
+          </view>
+          
+          <view class="card-content">
+            <view class="card-title">{{item.title}}</view>
+            
+            <view class="info-row">
+              <text class="info-text">{{item.date}} {{item.time}}</text>
+            </view>
+            <view class="info-row">
+              <text class="info-text">{{item.venue}} · {{item.distance || 0.5}}km</text>
+            </view>
+
+            <view class="card-bottom">
+              <view class="host-info">
+                <image class="avatar-sm" src="{{item.avatar || 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'}}"></image>
+                <text class="host-name">发起人</text>
+              </view>
+              <view class="join-btn-sm {{item.status === 2 ? 'disabled' : ''}}">
+                {{item.status === 0 ? '去报名' : (item.status === 1 ? '进行中' : '已结束')}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <view wx:else class="empty-state">
+      <text>暂无该分类活动</text>
+    </view>
+    
+    <view style="height: 180rpx;"></view>
+  </scroll-view>
+
+  <view class="fab-create" bindtap="goToCreate">
+    <view class="plus-icon">+</view>
+    <text>发起活动</text>
+  </view>
+</view>

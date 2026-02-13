@@ -1,0 +1,121 @@
+<view class="container" wx:if="{{activity}}">
+  <view class="hero">
+    <image class="banner" src="{{activity.image}}" mode="aspectFill" />
+    <view class="hero-overlay"></view>
+    <view class="hero-content">
+      <view class="status-tag {{status==1?'ongoing':''}} {{status==2?'finished':''}}">
+        {{status === 0 ? '报名中' : (status === 1 ? '进行中' : '已结束')}}
+      </view>
+    </view>
+  </view>
+
+  <view class="content-body">
+    <view class="header-card">
+      <view class="title">{{activity.title}}</view>
+      <view class="tags">
+        <text class="tag" wx:for="{{activity.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="info-section">
+      <view class="info-row">
+        <view class="icon-box">📅</view>
+        <view class="info-text">
+          <view class="label">时间</view>
+          <view class="val">{{activity.date}} {{activity.time}}</view>
+        </view>
+      </view>
+      
+      <view class="info-row">
+        <view class="icon-box">📍</view>
+        <view class="info-text">
+          <view class="label">地点</view>
+          <view class="val">{{activity.city}} · {{activity.venue}}</view>
+          <view class="sub">距离您 {{activity.distance}}km</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-row">
+        <view class="icon-box">👥</view>
+        <view class="info-text">
+            <view class="label">参与人数</view>
+            <view class="val">{{activity.current_people || 0}}/{{activity.max_people || '不限'}}</view>
+            <view class="sub" wx:if="{{isJoined && status > 0}}">
+              已参与
+              <text wx:if="{{isCreator}}" class="creator-badge">（发起者）</text>
+            </view>
+        </view>
+    </view>
+
+    <view class="desc-section">
+      <view class="section-title">活动详情</view>
+      <view class="desc-text">{{activity.description || '暂无活动详情'}}</view>
+    </view>
+
+    <!-- 相关图片 -->
+    <view class="related-images-section" wx:if="{{activity.relatedImages && activity.relatedImages.length > 0}}">
+      <view class="section-title">相关图片</view>
+      <view class="related-images-grid">
+        <block wx:for="{{activity.relatedImages}}" wx:key="*this">
+          <image class="related-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}" />
+        </block>
+      </view>
+    </view>
+
+    <!-- 参与者列表（活动进行中或已结束时显示） -->
+    <view class="participants-section" wx:if="{{status > 0 && activity.participants && activity.participants.length > 0}}">
+      <view class="section-title">参与者</view>
+      <view class="participants-grid">
+        <block wx:for="{{activity.participants}}" wx:key="id">
+          <view class="participant-item">
+            <image class="participant-avatar" src="{{item.avatar}}" />
+            <view class="participant-name">{{item.nickname}}</view>
+            <view class="participant-badge" wx:if="{{item.id === activity.creator.id}}">发起者</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="host-card">
+      <image class="avatar" src="{{activity.creator.avatar}}" />
+      <view class="host-info">
+        <view class="name">{{activity.creator.nickname}}</view>
+        <view class="role">活动发起者</view>
+        <view wx:if="{{activity.contact}}" class="contact-info">
+          <view class="contact-label">联系人：</view>
+          <view class="contact-value">{{activity.contact}}</view>
+        </view>
+        <view wx:if="{{activity.contactInfo}}" class="contact-info" catchtap="contact">
+          <view class="contact-label">联系方式：</view>
+          <view class="contact-value">{{activity.contactInfo}}</view>
+        </view>
+      </view>
+      <button class="contact-btn" size="mini" catchtap="contact">联系</button>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <button class="share-btn" open-type="share">
+      <text style="font-size:32rpx;">📤</text>
+      <text>分享</text>
+    </button>
+    
+    <block wx:if="{{status === 0}}">
+      <button wx:if="{{isCreator}}" class="join-btn creator-btn" catchtap="startActivity">开始活动</button>
+      <button wx:elif="{{!isJoined}}" class="join-btn" catchtap="join">立即报名</button>
+      <button wx:else class="join-btn disabled" disabled>已报名，等待开始</button>
+    </block>
+
+    <block wx:if="{{status === 1}}">
+      <button wx:if="{{isCreator}}" class="join-btn finish-style" catchtap="finishActivity">确认结束活动</button>
+      <button wx:else class="join-btn disabled" disabled>活动进行中...</button>
+    </block>
+
+    <block wx:if="{{status === 2}}">
+      <button class="join-btn settle-style" catchtap="goToSettle">
+        {{isCreator ? '管理活动结算' : '查看活动结算'}}
+      </button>
+    </block>
+  </view>
+</view>

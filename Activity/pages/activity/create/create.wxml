@@ -1,0 +1,119 @@
+<view class="container">
+  <view class="form-group">
+    <view class="section-title">活动信息</view>
+    
+    <view class="input-item">
+      <view class="label">活动标题</view>
+      <input placeholder="例如：周末奥森夜跑轻松局" bindinput="handleInput" data-field="title" value="{{formData.title}}"/>
+    </view>
+
+    <picker mode="selector" range="{{sportsTypes}}" bindchange="handleSportChange">
+      <view class="input-item">
+        <view class="label">活动类型</view>
+        <view class="picker-val {{formData.sport ? '' : 'placeholder'}}">
+          {{formData.sport || '请选择'}} <text class="arrow">></text>
+        </view>
+      </view>
+    </picker>
+
+    <view class="input-item">
+      <view class="label">活动形式</view>
+      <view class="radio-group">
+        <view class="radio-pill {{formData.category === '自由报名' ? 'active' : ''}}" bindtap="setCategory" data-val="自由报名">自由报名</view>
+        <view class="radio-pill {{formData.category === '组队竞赛' ? 'active' : ''}}" bindtap="setCategory" data-val="组队竞赛">组队竞赛</view>
+      </view>
+    </view>
+    
+    <view class="input-item">
+      <view class="label">活动标签</view>
+      <view class="tag-container">
+        <view bindtap="toggleTagNewbie" class="tag {{tagNewbie ? 'tag-blue' : 'tag-gray'}}">新手友好</view>
+        <view bindtap="toggleTagIntense" class="tag {{tagIntense ? 'tag-blue' : 'tag-gray'}}">上强度</view>
+        <view bindtap="toggleTagAdvanced" class="tag {{tagAdvanced ? 'tag-blue' : 'tag-gray'}}">进阶</view>
+        <view bindtap="toggleTagTeaching" class="tag {{tagTeaching ? 'tag-blue' : 'tag-gray'}}">有教学</view>
+        <view bindtap="toggleTagFree" class="tag {{tagFree ? 'tag-blue' : 'tag-gray'}}">免费</view>
+        <view bindtap="toggleTagAA" class="tag {{tagAA ? 'tag-blue' : 'tag-gray'}}">AA制度</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="section-title">时间与地点</view>
+    
+    <picker mode="date" bindchange="handleDateChange">
+      <view class="input-item">
+        <view class="label">日期</view>
+        <view class="picker-val">{{formData.date || '选择日期'}} <text class="arrow">></text></view>
+      </view>
+    </picker>
+
+    <picker mode="time" bindchange="handleTimeChange">
+      <view class="input-item">
+        <view class="label">时间</view>
+        <view class="picker-val">{{formData.time || '选择时间'}} <text class="arrow">></text></view>
+      </view>
+    </picker>
+
+    <view class="input-item" bindtap="chooseLocation">
+      <view class="label">地点</view>
+      <view class="picker-val {{formData.location ? '' : 'placeholder'}}">
+        {{formData.location || '点击选择地点'}} <text class="arrow">></text>
+      </view>
+      <view class="icon">📍</view>
+    </view>
+    
+    <view class="input-item">
+      <view class="label">场馆</view>
+      <input placeholder="输入场馆名称" bindinput="handleInput" data-field="venue" value="{{formData.venue}}"/>
+    </view>
+    
+    <view class="input-item">
+      <view class="label">人数限制</view>
+      <input type="number" placeholder="最大参与人数" bindinput="handleInput" data-field="max_people" />
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="section-title">活动详情</view>
+    
+    <view class="section-title">封面图</view>
+    <view class="upload-area" bindtap="chooseImage">
+      <image wx:if="{{formData.image}}" src="{{formData.image}}" mode="aspectFill" class="preview-img"></image>
+      <view wx:else class="upload-placeholder">
+        <view class="icon-camera">📷</view>
+        <text>添加封面图</text>
+      </view>
+    </view>
+    
+    <view class="section-title">相关图片</view>
+    <view class="related-images">
+      <block wx:for="{{formData.relatedImages}}" wx:key="*this">
+        <view class="related-image-item">
+          <image src="{{item}}" mode="aspectFill" class="related-image"></image>
+          <view class="delete-btn" bindtap="removeRelatedImage" data-index="{{index}}">×</view>
+        </view>
+      </block>
+      <view class="add-image-btn" bindtap="addRelatedImage" wx:if="{{formData.relatedImages.length < 9}}">
+        <view class="icon-camera">+</view>
+      </view>
+    </view>
+    
+
+
+    <textarea placeholder="介绍一下活动内容、注意事项等..." class="desc-input" bindinput="handleInput" data-field="description"></textarea>
+    
+    <view class="input-item">
+      <view class="label">联系人</view>
+      <input placeholder="请输入联系人姓名" bindinput="handleInput" data-field="contact" value="{{formData.contact}}"/>
+    </view>
+    
+    <view class="input-item">
+      <view class="label">联系方式</view>
+      <input placeholder="请输入手机号或其他联系方式" bindinput="handleInput" data-field="contactInfo" value="{{formData.contactInfo}}"/>
+    </view>
+  </view>
+
+  <view class="footer-bar">
+    <button class="submit-btn" bindtap="submit">发布活动</button>
+  </view>
+</view>

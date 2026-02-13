@@ -1,0 +1,81 @@
+/* pages/activity/settle/settle.wxss */
+page { background: #F4F5F9; padding-bottom: 100rpx; }
+
+.header-section {
+  background: #222;
+  color: #fff;
+  padding: 60rpx 0 100rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom-left-radius: 40rpx;
+  border-bottom-right-radius: 40rpx;
+}
+.icon-check {
+  width: 100rpx; height: 100rpx;
+  background: #22C55E;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 50rpx;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+.title { font-size: 36rpx; font-weight: bold; margin-bottom: 10rpx; }
+.subtitle { font-size: 26rpx; opacity: 0.8; }
+
+.stats-card {
+  margin: -60rpx 30rpx 30rpx 30rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
+}
+.card-title { font-size: 28rpx; font-weight: 600; margin-bottom: 20rpx; color: #333; }
+.stats-grid { display: flex; justify-content: space-around; }
+.stat-item { display: flex; flex-direction: column; align-items: center; }
+.stat-item .val { font-size: 40rpx; font-weight: bold; color: #222; }
+.stat-item .label { font-size: 24rpx; color: #999; margin-top: 4rpx; }
+
+.partner-section { padding: 0 30rpx; }
+.section-header { margin-bottom: 20rpx; display: flex; justify-content: space-between; align-items: flex-end; }
+.section-title { font-size: 32rpx; font-weight: 600; }
+.section-desc { font-size: 24rpx; color: #999; }
+
+.teammate-list { background: #fff; border-radius: 24rpx; padding: 10rpx 30rpx; }
+.teammate-row {
+  display: flex; align-items: center; padding: 24rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+.teammate-row:last-child { border-bottom: none; }
+.avatar { width: 80rpx; height: 80rpx; border-radius: 50%; margin-right: 20rpx; }
+.info { flex: 1; }
+.name { font-size: 30rpx; font-weight: 500; color: #333; }
+.tag { font-size: 22rpx; color: #666; background: #F0F2F5; display: inline-block; padding: 4rpx 12rpx; border-radius: 8rpx; margin-top: 6rpx; }
+
+.action-btn {
+  font-size: 26rpx;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  border: 1px solid #ddd;
+  color: #666;
+  background: #fff;
+  transition: all 0.2s;
+}
+.action-btn.active {
+  background: #E8F3FF;
+  border-color: #0066FF;
+  color: #0066FF;
+  font-weight: 500;
+}
+
+.footer {
+  position: fixed; bottom: 0; width: 100%;
+  padding: 20rpx 30rpx 50rpx 30rpx;
+  background: #fff;
+  box-sizing: border-box;
+}
+.confirm-btn {
+  background: #222; color: #fff; border-radius: 44rpx;
+  font-size: 32rpx; width: 100%;
+}

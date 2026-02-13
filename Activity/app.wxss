@@ -1,0 +1,10 @@
+page {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue',
+      Helvetica, Arial, sans-serif;
+    background-color: #F7F8FA;
+  }
+  
+  view {
+    box-sizing: border-box;
+  }
+  
